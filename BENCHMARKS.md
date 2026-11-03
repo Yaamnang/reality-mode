@@ -14,13 +14,13 @@ The app logs a speed line every 5 s while the camera runs. These are the medians
 | Hand model, per frame | 11 ms (90th percentile 17 ms) | 30 ms (90th percentile 53 ms) |
 | Rest of the app, per screen frame | 4 ms (90th percentile 9 ms) | 36 ms (90th percentile 115 ms) |
 
-The laptop keeps up with its 30 frames per second camera. The phone is much slower once an object is being followed. In the phone's fastest moments (22 samples at 25 or more screen frames per second) the camera ran at 27 frames per second and the hand model took 26 ms. Laptop and phone numbers mix both features and all kinds of use, and some of the laptop samples may come from automated test runs.
+The laptop keeps up with its 30 frames per second camera. The phone is much slower once an object is being followed. In the 22 samples where the phone's camera kept up at 25 or more frames per second, the medians were 27 camera frames, 43 screen frames and 26 ms for the hand model. Laptop and phone numbers mix both features and all kinds of use, and some of the laptop samples may come from automated test runs.
 
-On the laptop, finding an object's outline from a point took a median of 25 ms per look (64 logged looks, range 20-145 ms). The room tracker took about 8 ms per camera frame in a real session.
+Finding an object's outline from a point took a median of 25 ms per look (64 logged looks across all runs, range 20-145 ms). The room tracker took about 8 ms per camera frame in a real laptop session.
 
 ## Meta model response times
 
-Real Meta API calls on real camera frames.
+Real Meta API calls, on real camera frames or on real photos fed in as a camera.
 
 | Action | Measured | Runs |
 |---|---|---|

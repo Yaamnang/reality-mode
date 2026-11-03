@@ -72,13 +72,13 @@ The app stays live during these waits. An erase shows an instant rough fill, the
 
 ## Benchmarks
 
-Measured on real devices and real Meta calls, except tracking accuracy, which is simulated so the true position is known. Full tables and methods are in [BENCHMARKS.md](BENCHMARKS.md).
+Speed comes from real device logs and response times from real Meta calls. Tracking accuracy is simulated, so the true position is known. Full tables and methods are in [BENCHMARKS.md](BENCHMARKS.md).
 
 | What | Result |
 |---|---|
 | Laptop, 1280x720 webcam | 92 screen frames per second, keeps up with the camera's 30 |
 | Hand model per frame | 11 ms on the laptop, 30 ms on the phone |
-| Phone, typical use | 14 screen frames per second; about 43 at its fastest |
+| Phone, typical use | 14 screen frames per second; about 43 when its camera keeps up |
 | Muse Image fill | median 13.3 s across 16 real runs |
 | Time Knob picture position, hand-held camera (simulated) | 1.5 px median error, 4.3 px worst, on a 1280-wide frame |
 | Slide-only tracker on the same move, still used by Reality Shift | 45 px median error |
