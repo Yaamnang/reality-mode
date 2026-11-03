@@ -1,27 +1,49 @@
 # GODMODE
 
-> Don't just see reality. Understand it, predict it, and reshape it.
+> See before you act.
 
-GODMODE is an AI layer over the real world, controlled with your bare hands. Point a laptop webcam or phone at a desk and you can move, erase or replace real objects, or turn back time on them, while the camera stays live. It needs no headset, and it's a prototype of what smart glasses and headsets could do.
+**Demo video (3 min):** [watch on Google Drive](https://drive.google.com/file/d/1L26FyVgISnNXGjKVbghV-fll7Kz7CfDW/view?usp=sharing)
 
-Built solo for the Meta Global AI Developer Hackathon (Indie track).
+GODMODE is an AI layer over the real world, controlled with your bare hands. Point a camera at a real object and twist your hand to see its past and its future, or move and change the things in your room before you lift anything. It runs on a laptop webcam or a phone. It's a prototype of what Ray-Ban Meta glasses or Meta Quest could do, where you look at a thing and the answer appears on it; nothing in this repo runs on those devices yet.
+
+Built solo in Thimphu, Bhutan, for the Meta Global AI Developer Hackathon 2026 (Indie Developer track, **Build for Your World**).
+
+## The problem
+
+Every day we make decisions about physical things from one snapshot: what they look like right now. We can't see how an avocado will change, whether the gadget we're about to bin counts as toxic waste, how a sacred thangka was made or how it should be handled, or how a room will look before we drag the furniture around. So we guess, and guessing costs food, money, effort, and sometimes respect for things that matter.
+
+Where I live, that last one is real. In Bhutan a Buddhist thangka, statue or prayer flag is never put in the bin; it is burned respectfully. I wrote that rule into GODMODE's judge (`server/timeknob.py`): point it at a thangka and it says **Sacred item · Never throw, burn**, and it only shows how the painting was made, never the painting torn or decaying.
 
 ## What it does
 
-### Reality Shift: change what's in front of you
+For this demo, GODMODE is split into two features. Every past and future stage is a picture Muse Image draws on the real object: a preview, not a photo, and not a prediction with dates.
 
-Lock onto a real object by pointing at it, then change it with gestures. The Real and Virtual views sit side by side, both live.
+### Time Knob: know what you're holding
+
+Point at an object and twist your hand to travel through its life.
+
+- **Avocado:** back to blossoms and unripe fruit on the branch, forward to overripe and rotten.
+- **AirPods case:** back to an illustrated exploded view, then raw materials. Tagged **Electronics · Toxic waste**, so it doesn't go in the normal bin.
+- **Thangka:** back to the bare canvas with its pencil sketch, then the mineral pigments. Tagged **Sacred item · Never throw, burn**.
+
+When something has no honest future, GODMODE says so instead of inventing one: turn an AirPods case forward and it shows *"No future: made things don't age on their own."*
+
+### Reality Shift: change your space before you lift anything
+
+Moving house? See where things go, and what they could be, before you carry anything. Lock onto a real object by pointing at it, then change it with gestures. The Real and Virtual views sit side by side, both live.
 
 - **Move:** grab an object with your fist and drop it somewhere else. Muse Image fills the spot it left.
 - **Erase:** make it disappear with a thumbs down.
 - **Transmute:** hold your hand open. Muse Spark suggests 4 things that could stand in its place and Muse Image draws them all. Twist your hand like a knob to switch between them instantly. You can also type a command, like "make it gold".
 - **Any order:** a transmuted object can be moved, and a moved object can be transmuted where it now stands.
 
-### Time Knob: see an object's past and future
+### How the Time Knob works
 
 Lock onto an object and three Muse Spark agents examine it: one studies the details, one the surroundings, one the material. A fourth acts as judge and decides what it is, what kind of thing it is and where it ends up, such as "Fruit · Biodegradable" or "Electronics · Toxic waste". It then writes the object's timeline, and Muse Image draws every stage.
 
-Open your hand to bring up a magic circle on your palm, then twist it to travel through time. A phone goes back to an exploded view, then raw materials. An apple goes back to a blossom, or forward until it rots.
+Muse Spark then checks every picture Muse Image draws against the stage it was meant to show, and redraws it if it's wrong. Made things get no future stages, and sacred items only get the stages of how they were made.
+
+Open your hand to bring up a magic circle on your palm, then twist it to travel through time.
 
 ## How Meta's models are used
 
