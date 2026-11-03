@@ -1,0 +1,13 @@
+{
+  "name": "godmode-replay",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Replays saved debug frames through the app's gesture + highlight code in headless Chrome.",
+  "scripts": {
+    "replay": "node replay.mjs"
+  },
+  "dependencies": {
+    "puppeteer-core": "^25.16.0"
+  }
+}

@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.venv/
+__pycache__/
+*.pyc
+.env
+# camera frames from debug capture (pictures of your room)
+debug-frames/
+# local estimate of Meta credit spent (server/spend.py)
+server/spend.json
+# model weights are large, download them instead of committing
+*.pt
+*.pth
+*.onnx
+*.safetensors

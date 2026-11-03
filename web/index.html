@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <!-- Light only: stops phone browsers from force-darkening the page. -->
+    <meta name="color-scheme" content="only light" />
+    <title>GODMODE</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <span>GODMODE</span>
+      </div>
+
+      <nav id="mode-tabs" class="segmented" role="tablist">
+        <button data-mode="shift" role="tab" class="active" aria-selected="true">Reality Shift</button>
+        <button data-mode="knob" role="tab" aria-selected="false">Time Knob</button>
+      </nav>
+
+      <div class="topbar-right">
+        <span id="server-status" class="status">Server</span>
+        <button id="phone-btn" class="btn btn-secondary">Connect phone</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section id="views">
+      <div id="stage" class="view">
+        <video id="video" playsinline muted></video>
+        <canvas id="overlay"></canvas>
+        <span class="view-label">Real</span>
+
+        <div class="hud">
+          <span id="fps" class="chip">– fps</span>
+        </div>
+        <div id="gesture-chip" class="chip chip-large" hidden></div>
+
+        <div id="hint" class="empty">
+          <div class="empty-icon"></div>
+          <p class="empty-title">Camera is off</p>
+          <p class="empty-text">Start the camera to begin</p>
+        </div>
+      </div>
+
+      <!-- Appears once an object is erased: the same camera view with the edit applied. -->
+      <div id="virtual-view" class="view" hidden>
+        <canvas id="virtual"></canvas>
+        <span class="view-label">Virtual</span>
+        <div id="fill-chip" class="chip chip-large" hidden></div>
+      </div>
+      </section>
+
+      <aside class="panel">
+        <section class="card">
+          <h2>Camera</h2>
+          <select id="camera-select"></select>
+          <button id="start-btn" class="btn btn-primary">Start camera</button>
+          <button id="snapshot-btn" class="btn btn-secondary" disabled>Send frame to server</button>
+        </section>
+
+        <section class="card">
+          <h2>Reality Shift</h2>
+          <label class="switch-row">
+            <span>Point to select objects</span>
+            <input type="checkbox" id="shift-toggle" class="switch" />
+          </label>
+          <p id="shift-status" class="muted">Off</p>
+          <button id="erase-btn" class="btn btn-primary" disabled>Erase selected object</button>
+          <form id="transmute-form" class="command-row">
+            <input id="transmute-input" type="text" placeholder="Transmute: make it gold" autocomplete="off" />
+            <button id="transmute-btn" class="btn btn-primary" type="submit" disabled>Go</button>
+          </form>
+          <button id="remove-btn" class="btn btn-secondary" disabled>Put object back</button>
+          <button id="reset-btn" class="btn btn-secondary" disabled>Reset all</button>
+          <label class="switch-row">
+            <span>Send debug frames</span>
+            <input type="checkbox" id="debug-toggle" class="switch" checked />
+          </label>
+        </section>
+
+        <section id="knob-card" class="card" hidden>
+          <h2>Time Knob</h2>
+          <p id="knob-status" class="muted">Off</p>
+          <button id="knob-reset" class="btn btn-secondary">Start over</button>
+        </section>
+
+        <section class="card">
+          <h2>Hand tracking</h2>
+          <label class="switch-row">
+            <span>Track hands</span>
+            <input type="checkbox" id="hands-toggle" class="switch" />
+          </label>
+          <label class="switch-row">
+            <span>Mirror view</span>
+            <input type="checkbox" id="mirror-toggle" class="switch" checked />
+          </label>
+          <p id="gesture-readout" class="muted">Off</p>
+        </section>
+
+        <section class="card">
+          <h2>Activity</h2>
+          <pre id="log"></pre>
+        </section>
+      </aside>
+    </main>
+
+    <dialog id="phone-dialog">
+      <div class="dialog-head">
+        <h2>Open on your phone</h2>
+        <button id="phone-close" class="icon-btn" aria-label="Close">✕</button>
+      </div>
+      <canvas id="phone-qr"></canvas>
+      <select id="phone-ip"></select>
+      <p id="phone-url" class="url"></p>
+      <ol class="steps">
+        <li>Connect your phone to the <b>same Wi-Fi</b> as this laptop (or to the laptop's Mobile Hotspot).</li>
+        <li>Scan the code with your phone's camera.</li>
+        <li>If it says <b>"connection is not private"</b>, tap <b>Advanced → Proceed</b> (on iPhone: <b>Show Details → visit this website</b>). It's our own certificate, so this is expected.</li>
+        <li>Tap <b>Start camera</b>.</li>
+      </ol>
+    </dialog>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
