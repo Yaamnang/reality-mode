@@ -1,0 +1,10 @@
+.env
+.git
+CLAUDE.md
+debug-frames
+**/node_modules
+**/.venv
+**/__pycache__
+web/dist
+server/spend.json
+tools

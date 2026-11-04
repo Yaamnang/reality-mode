@@ -294,6 +294,11 @@ function applyDebug() {
 debugToggle.addEventListener("change", applyDebug);
 // Each saved frame stalls a phone for a moment, so it's off there unless switched on.
 if (isPhone) debugToggle.checked = false;
+// A public build has nowhere to save them.
+if (import.meta.env.PROD) {
+  debugToggle.checked = false;
+  debugToggle.closest("label")!.hidden = true;
+}
 applyDebug();
 
 // Tap the video to select an object directly.

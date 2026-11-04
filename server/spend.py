@@ -24,6 +24,7 @@ VOICE_PER_HOUR = 0.18  # metered in whole seconds
 DEFAULT_START = 149.94795
 
 _lock = threading.Lock()
+_this_run = 0.0  # spent since this server started
 
 
 def _load() -> dict:
@@ -34,12 +35,20 @@ def _load() -> dict:
 
 def add(cost: float, what: str) -> None:
     """Records one paid call."""
+    global _this_run
     with _lock:
+        _this_run += cost
         data = _load()
         data["spent"] = round(data["spent"] + cost, 6)
         data["calls"] += 1
         FILE.write_text(json.dumps(data, indent=2), encoding="utf-8")
     print(f"[spend] {what}: ${cost:.5f}, estimated balance ${data['balance_at_start'] - data['spent']:.4f}", flush=True)
+
+
+def this_run() -> float:
+    """Estimated spend since this server started."""
+    with _lock:
+        return _this_run
 
 
 def spark_cost(usage) -> float:

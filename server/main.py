@@ -2,9 +2,15 @@
 
 import io
 import json
+import os
+import threading
+import time
+from pathlib import Path
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from PIL import Image, UnidentifiedImageError
 
 import outline as outline_tools
@@ -14,10 +20,46 @@ import timeknob
 
 app = FastAPI(title="GODMODE server")
 
+# On a public link anyone can spend the Meta credit, so MAX_SPEND (USD, set by render.yaml) stops paid
+# calls once this run of the server has used that much. A server that restarts starts counting again.
+# Not set = no limits, for running on your own laptop.
+MAX_SPEND = float(os.environ.get("MAX_SPEND") or 0)
+MAX_PER_MINUTE = 60  # requests from one address; locking one object takes about 10
+MAX_BODY = 8_000_000  # bytes; a camera frame is well under 1 MB
+_recent: dict[str, list[float]] = {}
+_recent_lock = threading.Lock()
+
+
+def _too_many(address: str) -> bool:
+    now = time.monotonic()
+    with _recent_lock:
+        if len(_recent) > 5000:
+            _recent.clear()
+        times = [t for t in _recent.get(address, []) if now - t < 60]
+        times.append(now)
+        _recent[address] = times
+        return len(times) > MAX_PER_MINUTE
+
+
+@app.middleware("http")
+async def public_limits(request: Request, call_next):
+    if MAX_SPEND and request.method == "POST" and request.url.path.startswith("/api/"):
+        if int(request.headers.get("content-length") or 0) > MAX_BODY:
+            return JSONResponse({"detail": "that picture is too big"}, status_code=413)
+        if spend.this_run() >= MAX_SPEND:
+            return JSONResponse({"detail": "this demo has used up its budget for now"}, status_code=429)
+        address = (request.headers.get("x-forwarded-for") or (request.client.host if request.client else "")).split(",")[0].strip()
+        if _too_many(address):
+            return JSONResponse({"detail": "too many requests, wait a minute"}, status_code=429)
+    return await call_next(request)
+
+
 # The Vite dev server proxies /api, but allow direct calls too (e.g. from a phone on the same Wi-Fi).
+# On Render the website comes from this same server, so nothing else needs to call it.
+_site = os.environ.get("RENDER_EXTERNAL_URL")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[_site] if _site else ["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -26,6 +68,8 @@ app.add_middleware(
 @app.get("/api/spend")
 def spend_summary():
     """Estimated Meta credit left (there's no balance API; see spend.py)."""
+    if MAX_SPEND:
+        raise HTTPException(status_code=404)  # not for a public link
     return spend.summary()
 
 
@@ -221,3 +265,9 @@ def describe_object(
     except (UnidentifiedImageError, OSError):
         raise HTTPException(status_code=400, detail="image is not a readable picture")
     return {"label": remove_tools.describe(remove_tools.downscale(frame), parsed)}
+
+
+# On Render, this same server serves the built website. Last, so it can't shadow /api.
+_web = Path(__file__).resolve().parent.parent / "web" / "dist"
+if _web.exists():
+    app.mount("/", StaticFiles(directory=_web, html=True), name="web")

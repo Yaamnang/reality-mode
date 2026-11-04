@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: reality-mode
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: MODEL_API_KEY
+        sync: false # entered in Render's dashboard, never in this file
+      - key: MAX_SPEND
+        value: "5" # USD per run of the server, see server/main.py
