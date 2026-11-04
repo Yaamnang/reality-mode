@@ -4,6 +4,8 @@
 
 **Demo video (3 min):** [watch on Google Drive](https://drive.google.com/file/d/1L26FyVgISnNXGjKVbghV-fll7Kz7CfDW/view?usp=sharing)
 
+**Try it live:** [reality-mode.onrender.com](https://reality-mode.onrender.com) (free server: if nobody has used it for 15 minutes, the first load takes about a minute; allow the camera when asked)
+
 GODMODE is an AI layer over the real world, controlled with your bare hands. Point a camera at a real object and twist your hand to see its past and its future, or move and change the things in your room before you lift anything. It runs on a laptop webcam or a phone. It's a prototype of what Ray-Ban Meta glasses or Meta Quest could do, where you look at a thing and the answer appears on it; nothing in this repo runs on those devices yet.
 
 Built solo in Thimphu, Bhutan, for the Meta Global AI Developer Hackathon 2026 (Indie Developer track, **Build for Your World**).
